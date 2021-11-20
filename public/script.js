@@ -22,9 +22,9 @@ showChat.addEventListener("click", () => {
 const user = prompt("Enter your name");
 
 var peer = new Peer(undefined, {
-	path: '/peerjs',
+	path: "/peerjs",
 	host: "/",
-	port: "9000",
+	port: "3030"
 });
 
 let myVideoStream;
@@ -32,8 +32,7 @@ navigator.mediaDevices
 .getUserMedia({
 	audio: true,
 	video: true,
-})
-.then((stream) => {
+}).then((stream) => {
 	myVideoStream = stream;
 	addVideoStream(myVideo, stream);
 
