@@ -1,0 +1,1 @@
+npm i -g peer && peerjs --port 3001

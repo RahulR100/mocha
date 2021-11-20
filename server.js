@@ -3,6 +3,7 @@ const app = express();
 const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
 const { ExpressPeerServer } = require("peer");
+require('dotenv').config();
 
 const io = require("socket.io")(server, {
 	cors: {
@@ -36,4 +37,4 @@ io.on("connection", (socket) => {
 	});
 });
 
-server.listen(process.env.PORT || 3030);
+server.listen(process.env.PORT);
