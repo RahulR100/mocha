@@ -5,9 +5,7 @@ const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
 
 const io = require("socket.io")(server);
-app.use(cors({
-	origin: '*'
-}));
+app.use(cors());
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
