@@ -1,13 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
 
-const io = require("socket.io")(server, {
-	cors: {
-		origin: '*'
-	}
-});
+const io = require("socket.io")(server);
+app.use(cors({
+	origin: '*'
+}));
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
