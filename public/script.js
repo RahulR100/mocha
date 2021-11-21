@@ -23,7 +23,11 @@ showChat.addEventListener("click", () => {
 
 const user = prompt("Enter your name");
 
-var myPeer = new Peer();
+var myPeer = new Peer(undefined, {
+	host: 'mochapeer.herokuapp.com',
+	secure: true,
+	path: '/'
+});
 
 let myVideoStream;
 navigator.mediaDevices.getUserMedia({
