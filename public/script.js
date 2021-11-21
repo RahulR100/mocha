@@ -38,7 +38,7 @@ navigator.mediaDevices.getUserMedia({
 });
 
 myPeer.on("call", (call) => {
-	call.answer(stream);
+	call.answer(myVideoStream);
 	const video = document.createElement("video");
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
@@ -46,7 +46,7 @@ myPeer.on("call", (call) => {
 });
 
 socket.on("user-connected", (userId) => {
-	connectToNewUser(userId, stream);
+	connectToNewUser(userId, myVideoStream);
 });
 
 socket.on('user-disconnected', userId => {
