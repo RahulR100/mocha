@@ -23,8 +23,8 @@ const user = prompt("Enter your name");
 
 var peer = new Peer(undefined, {
 	path: "/myapp",
-	secure: true,
-	host: "mochapeer.herokuapp.com",
+	secure: false,
+	host: '/',
 	port: 9000,
 	key: 'peerjs'
 });
