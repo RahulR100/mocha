@@ -49,15 +49,15 @@ socket.on("user-connected", (userId) => {
 	connectToNewUser(userId, myVideoStream);
 });
 
-socket.on('user-disconnected', userId => {
+socket.on('user-disconnected', (userId) => {
   if (peers[userId]) peers[userId].close();
-})
+});
 
 myPeer.on("open", (id) => {
 	socket.emit("join-room", ROOM_ID, id, user);
 });
 
-const connectToNewUser = (userId, stream) => {
+function connectToNewUser(userId, stream) {
 	const call = myPeer.call(userId, stream);
 	const video = document.createElement("video");
 	call.on("stream", (userVideoStream) => {
@@ -68,15 +68,15 @@ const connectToNewUser = (userId, stream) => {
 	});
 
 	peers[userId] = call;
-};
+}
 
-const addVideoStream = (video, stream) => {
+function addVideoStream(video, stream) {
 	video.srcObject = stream;
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
 	});
 	videoGrid.append(video);
-};
+}
 
 let text = document.querySelector("#chat_message");
 let send = document.getElementById("send");
