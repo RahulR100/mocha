@@ -22,9 +22,10 @@ showChat.addEventListener("click", () => {
 const user = prompt("Enter your name");
 
 var peer = new Peer(undefined, {
-	path: "/peerjs",
-	host: "/",
-	port: 9000
+	path: "/myapp",
+	host: "mochapeer.herokuapp.com",
+	port: 9000,
+	key: 'peerjs'
 });
 
 let myVideoStream;

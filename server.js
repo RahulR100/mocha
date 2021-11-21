@@ -2,13 +2,11 @@ const express = require("express");
 const app = express();
 const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
-const { PeerServer } = require("peer");
 
-const io = require("socket.io")(server);
-
-const peerServer = PeerServer(server, {
-	port: 9000,
-	path: '/peerjs'
+const io = require("socket.io")(server, {
+	cors: {
+		origin: '*'
+	}
 });
 
 app.set("view engine", "ejs");
