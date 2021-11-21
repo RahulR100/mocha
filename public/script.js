@@ -1,4 +1,4 @@
-const socket = io("localhost");
+const socket = io.connect('/');
 const videoGrid = document.getElementById("video-grid");
 const showChat = document.querySelector("#showChat");
 const backBtn = document.querySelector(".header__back");
@@ -72,7 +72,6 @@ const connectToNewUser = (userId, stream) => {
 
 const addVideoStream = (video, stream) => {
 	video.srcObject = stream;
-	console.log(stream);
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
 	});
