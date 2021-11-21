@@ -1,9 +1,11 @@
 const socket = io("/");
 const videoGrid = document.getElementById("video-grid");
-const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
 const backBtn = document.querySelector(".header__back");
+const myVideo = document.createElement("video");
 myVideo.muted = true;
+
+const peers = {};
 
 backBtn.addEventListener("click", () => {
 	document.querySelector(".main__left").style.display = "flex";
@@ -21,7 +23,7 @@ showChat.addEventListener("click", () => {
 
 const user = prompt("Enter your name");
 
-var peer = new Peer(undefined, {
+var myPeer = new Peer(undefined, {
 	path: "/myapp",
 	secure: false,
 	host: '/',
@@ -29,16 +31,13 @@ var peer = new Peer(undefined, {
 	key: 'peerjs'
 });
 
-let myVideoStream;
-navigator.mediaDevices
-.getUserMedia({
+navigator.mediaDevices.getUserMedia({
 	audio: true,
 	video: true,
 }).then((stream) => {
-	myVideoStream = stream;
 	addVideoStream(myVideo, stream);
 
-	peer.on("call", (call) => {
+	myPeer.on("call", (call) => {
 		call.answer(stream);
 		const video = document.createElement("video");
 		call.on("stream", (userVideoStream) => {
@@ -51,24 +50,34 @@ navigator.mediaDevices
 	});
 });
 
+socket.on('user-disconnected', userId => {
+  if (peers[userId]) peers[userId].close();
+})
+
+myPeer.on("open", (id) => {
+	socket.emit("join-room", ROOM_ID, id, user);
+});
+
 const connectToNewUser = (userId, stream) => {
-	const call = peer.call(userId, stream);
+	const call = myPeer.call(userId, stream);
 	const video = document.createElement("video");
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-};
+	call.on('close', () => {
+	    video.remove();
+	});
 
-peer.on("open", (id) => {
-	socket.emit("join-room", ROOM_ID, id, user);
-});
+	peers[userId] = call;
+};
 
 const addVideoStream = (video, stream) => {
 	video.srcObject = stream;
+	console.log(stream);
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
-		videoGrid.append(video);
 	});
+	videoGrid.append(video);
 };
 
 let text = document.querySelector("#chat_message");
