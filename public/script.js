@@ -35,18 +35,18 @@ navigator.mediaDevices.getUserMedia({
 }).then((stream) => {
 	myVideoStream = stream;
 	addVideoStream(myVideo, stream);
+});
 
-	myPeer.on("call", (call) => {
-		call.answer(stream);
-		const video = document.createElement("video");
-		call.on("stream", (userVideoStream) => {
-			addVideoStream(video, userVideoStream);
-		});
+myPeer.on("call", (call) => {
+	call.answer(stream);
+	const video = document.createElement("video");
+	call.on("stream", (userVideoStream) => {
+		addVideoStream(video, userVideoStream);
 	});
+});
 
-	socket.on("user-connected", (userId) => {
-		connectToNewUser(userId, stream);
-	});
+socket.on("user-connected", (userId) => {
+	connectToNewUser(userId, stream);
 });
 
 socket.on('user-disconnected', userId => {
