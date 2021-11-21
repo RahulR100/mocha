@@ -63,7 +63,7 @@ function connectToNewUser(userId, stream) {
 
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
-		console.log('connecting to new user');
+		console.log(userVideoStream);
 	});
 	call.on('close', () => {
 	    video.remove();
