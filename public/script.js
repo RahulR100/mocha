@@ -40,6 +40,7 @@ navigator.mediaDevices.getUserMedia({
 myPeer.on("call", (call) => {
 	call.answer(myVideoStream);
 	const video = document.createElement("video");
+	
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
@@ -63,7 +64,6 @@ function connectToNewUser(userId, stream) {
 
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
-		console.log(userVideoStream);
 	});
 	call.on('close', () => {
 	    video.remove();
