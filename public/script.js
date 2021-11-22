@@ -53,6 +53,9 @@ myPeer.on("call", (call) => {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
+	call.on('close', () => {
+	    video.remove();
+	});
 });
 
 socket.on('user-disconnected', (userId) => {
