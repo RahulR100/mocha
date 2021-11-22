@@ -22,6 +22,7 @@ showChat.addEventListener("click", () => {
 });
 
 const user = prompt("Enter your name");
+var myId;
 
 var myPeer = new Peer(undefined, {
 	host: 'mochapeer.herokuapp.com',
@@ -35,6 +36,15 @@ navigator.mediaDevices.getUserMedia({
 }).then((stream) => {
 	myVideoStream = stream;
 	addVideoStream(myVideo, stream);
+
+	socket.on('new-user-connected', (userId) => {
+		if (userId != myId) {
+			console.log(userId);
+			connectToNewUser(userId, stream);
+		}
+	});
+
+	socket.emit('connection-request', ROOM_ID, myId);
 });
 
 myPeer.on("call", (call) => {
@@ -46,15 +56,16 @@ myPeer.on("call", (call) => {
 	});
 });
 
-socket.on("user-connected", (userId) => {
-	connectToNewUser(userId, myVideoStream);
-});
+// socket.on("user-connected", (userId) => {
+// 	connectToNewUser(userId, myVideoStream);
+// });
 
 socket.on('user-disconnected', (userId) => {
   if (peers[userId]) peers[userId].close();
 });
 
 myPeer.on("open", (id) => {
+	myId = id;
 	socket.emit("join-room", ROOM_ID, id, user);
 });
 

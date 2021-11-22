@@ -23,13 +23,16 @@ app.get("/:room", (req, res) => {
 io.on("connection", (socket) => {
 	socket.on("join-room", (roomId, userId, userName) => {
 		socket.join(roomId);
-		io.to(roomId).emit("user-connected", userId);
+		//io.to(roomId).emit("user-connected", userId);
 		socket.on('disconnect', () => {
 	      	io.to(roomId).emit('user-disconnected', userId);
 	    });
 		socket.on("message", (message) => {
 			io.to(roomId).emit("createMessage", message, userName);
 		});
+	});
+	socket.on('connection-request', (roomId, userId) => {
+		io.to(roomId).emit('new-user-connected', userId)
 	});
 });
 
