@@ -67,6 +67,7 @@ myPeer.on("open", (id) => {
 window.addEventListener('beforeunload', (e) => {
 	e.preventDefault();
 	socket.emit('call-ended', ROOM_ID, myId);
+	console.log(myId);
 })
 
 function connectToNewUser(userId, stream) {
