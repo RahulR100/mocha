@@ -23,10 +23,10 @@ app.get("/:room", (req, res) => {
 io.on("connection", (socket) => {
 	socket.on("join-room", (roomId) => {
 		socket.join(roomId);
+		socket.on('disconnect', (roomId, userId) => {
+	      	io.to(roomId).emit('user-disconnected', userId);
+	    });
 	});
-	socket.on('user-disco', (roomId, userId) => {
-      	io.to(roomId).emit('user-disconnected', userId);
-    });
 	socket.on("message", (roomId, message, userName) => {
 		io.to(roomId).emit("createMessage", message, userName);
 	});
