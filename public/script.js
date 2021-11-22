@@ -66,11 +66,6 @@ myPeer.on("open", (id) => {
 	socket.emit("join-room", ROOM_ID);
 });
 
-window.addEventListener('beforeunload', (e) => {
-	e.preventDefault();
-	socket.emit('call-ended', ROOM_ID, myId);
-})
-
 function connectToNewUser(userId, stream) {
 	const call = myPeer.call(userId, stream);
 	const video = document.createElement("video");
@@ -82,6 +77,12 @@ function connectToNewUser(userId, stream) {
 	//     video.remove();
 	//     console.log(userId);
 	// });
+
+	window.addEventListener('beforeunload', (e) => {
+		e.preventDefault();
+		socket.emit('call-ended', ROOM_ID, myId);
+		call.close();
+	})
 
 	peers[userId] = call;
 }
