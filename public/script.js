@@ -5,7 +5,7 @@ const backBtn = document.querySelector(".header__back");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
-const peers = {};
+var peers = {};
 
 backBtn.addEventListener("click", () => {
 	document.querySelector(".main__left").style.display = "flex";
@@ -28,7 +28,7 @@ var myPeer = new Peer(undefined, {
 	secure: true
 });
 
-let myVideoStream;
+var myVideoStream;
 navigator.mediaDevices.getUserMedia({
 	audio: true,
 	video: true,
