@@ -53,9 +53,6 @@ myPeer.on("call", (call) => {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-	call.on('close', () => {
-	    video.remove();
-	});
 });
 
 socket.on('user-disconnected', (userId) => {
@@ -76,6 +73,7 @@ function connectToNewUser(userId, stream) {
 	});
 	call.on('close', () => {
 	    video.remove();
+	    console.log(userId);
 	});
 
 	peers[userId] = call;
