@@ -72,7 +72,7 @@ function connectToNewUser(userId, stream) {
 		addVideoStream(video, userVideoStream);
 	});
 	call.on('close', () => {
-		socket.emit('user-left', userId)
+		socket.emit('user-left', ROOM_ID, userId)
 	    video.remove();
 	});
 
@@ -93,14 +93,14 @@ let messages = document.querySelector(".messages");
 
 send.addEventListener("click", (e) => {
 	if (text.value.length !== 0) {
-		socket.emit("message", text.value, user);
+		socket.emit("message", ROOM_ID, text.value, user);
 		text.value = "";
 	}
 });
 
 text.addEventListener("keydown", (e) => {
 	if (e.key === "Enter" && text.value.length !== 0) {
-		socket.emit("message", text.value, user);
+		socket.emit("message", ROOM_ID, text.value, user);
 		text.value = "";
 	}
 });

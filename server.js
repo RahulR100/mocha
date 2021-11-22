@@ -24,10 +24,10 @@ io.on("connection", (socket) => {
 	socket.on("join-room", (roomId) => {
 		socket.join(roomId);
 	});
-	socket.on('disconnect', (userId) => {
+	socket.on('disconnect', (roomId, userId) => {
       	io.to(roomId).emit('user-disconnected', userId);
     });
-	socket.on("message", (message, userName) => {
+	socket.on("message", (roomId, message, userName) => {
 		io.to(roomId).emit("createMessage", message, userName);
 	});
 	socket.on('connection-request', (roomId, userId) => {
