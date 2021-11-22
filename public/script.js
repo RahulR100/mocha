@@ -72,11 +72,12 @@ function connectToNewUser(userId, stream) {
 		addVideoStream(video, userVideoStream);
 	});
 	call.on('close', () => {
-		socket.emit('user-left', ROOM_ID, userId)
+		socket.emit('disconnect', ROOM_ID, userId)
 	    video.remove();
 	});
 
 	peers[userId] = call;
+	console.log(peers);
 }
 
 function addVideoStream(video, stream) {
