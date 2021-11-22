@@ -35,6 +35,10 @@ navigator.mediaDevices.getUserMedia({
 }).then((stream) => {
 	myVideoStream = stream;
 	addVideoStream(myVideo, stream);
+
+	myPeer.on("open", (id) => {
+		socket.emit("join-room", ROOM_ID, id, user);
+	});
 });
 
 myPeer.on("call", (call) => {
@@ -52,10 +56,6 @@ socket.on("user-connected", (userId) => {
 
 socket.on('user-disconnected', (userId) => {
   if (peers[userId]) peers[userId].close();
-});
-
-myPeer.on("open", (id) => {
-	socket.emit("join-room", ROOM_ID, id, user);
 });
 
 function connectToNewUser(userId, stream) {
