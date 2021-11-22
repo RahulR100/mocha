@@ -57,6 +57,8 @@ myPeer.on("call", (call) => {
 
 socket.on('user-disconnected', (userId) => {
   if (peers[userId]) peers[userId].close();
+  console.log(userId);
+  console.log(peers);
 });
 
 myPeer.on("open", (id) => {
@@ -67,7 +69,6 @@ myPeer.on("open", (id) => {
 window.addEventListener('beforeunload', (e) => {
 	e.preventDefault();
 	socket.emit('call-ended', ROOM_ID, myId);
-	console.log(myId);
 })
 
 function connectToNewUser(userId, stream) {
