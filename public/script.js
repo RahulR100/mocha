@@ -57,8 +57,6 @@ myPeer.on("call", (call) => {
 
 socket.on('user-disconnected', (userId) => {
   if (peers[userId]) peers[userId].close();
-  console.log(userId);
-  console.log(peers);
 });
 
 myPeer.on("open", (id) => {
@@ -73,16 +71,9 @@ function connectToNewUser(userId, stream) {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-	// call.on('close', () => {
-	//     video.remove();
-	//     console.log(userId);
-	// });
-
-	window.addEventListener('beforeunload', (e) => {
-		e.preventDefault();
-		socket.emit('call-ended', ROOM_ID, myId);
-		call.close();
-	})
+	call.on('close', () => {
+	    video.remove();
+	});
 
 	peers[userId] = call;
 }
