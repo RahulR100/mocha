@@ -43,7 +43,7 @@ navigator.mediaDevices.getUserMedia({
 		}
 	});
 
-	socket.emit('connection-request', ROOM_ID, myId);
+	socket.emit('connection-request', myId);
 });
 
 myPeer.on("call", (call) => {
@@ -87,7 +87,7 @@ function addVideoStream(video, stream) {
 
 window.addEventListener('beforeunload', (e) => {
 	e.preventDefault();
-	socket.emit('call-ended', ROOM_ID, myId);
+	socket.emit('call-ended', myId);
 });
 
 let text = document.querySelector("#chat_message");
@@ -149,7 +149,7 @@ inviteButton.addEventListener("click", (e) => {
 		);
 });
 
-socket.on("createMessage", (message, userName) => {
+socket.on("create-message", (message, userName) => {
 	messages.innerHTML +=
 	`<div class="message">
 		<b><i class="far fa-user-circle"></i> <span> ${

@@ -24,13 +24,13 @@ io.on("connection", (socket) => {
 	socket.on("join-room", (roomId) => {
 		socket.join(roomId);
 	});
-	socket.on('call-ended', (roomId, userId) => {
+	socket.on('call-ended', (userId) => {
       	socket.broadcast.emit('user-disconnected', userId);
     });
 	socket.on("message", (roomId, message, userName) => {
-		socket.emit("createMessage", message, userName);
+		io.to(roomId).emit("create-message", message, userName);
 	});
-	socket.on('connection-request', (roomId, userId) => {
+	socket.on('connection-request', (userId) => {
 		socket.broadcast.emit('new-user-connected', userId)
 	});
 });
