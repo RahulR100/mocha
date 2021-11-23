@@ -68,9 +68,9 @@ function addVideoStream(video, stream, name) {
 	});
 	let container = document.createElement('div');
 	let nametag = document.createElement('span');
+	container.append(nametag);
 	nametag.innerHTML = name;
-	container.appendChild(nametag);
-	container.appendChild(video);
+	container.append(video);
 	videoGrid.append(container);
 }
 
