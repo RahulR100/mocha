@@ -19,7 +19,7 @@ navigator.mediaDevices.getUserMedia({
 	video: true,
 }).then((stream) => {
 	myVideoStream = stream;
-	addVideoStream(myVideo, stream);
+	addVideoStream(myVideo, stream, myUsername);
 
 	socket.on('new-user-connected', (userId, userName) => {
 		peers[userId] = userName;
@@ -37,7 +37,7 @@ myPeer.on("call", (call) => {
 	const video = document.createElement("video");
 	
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream);
+		addVideoStream(video, userVideoStream, peers[call.id]);
 	});
 });
 
@@ -56,21 +56,23 @@ function connectToNewUser(userId, stream) {
 	video.setAttribute('id', userId);
 
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream);
+		addVideoStream(video, userVideoStream, peers[userId]);
 	});
 }
 
-function addVideoStream(video, stream) {
+function addVideoStream(video, stream, name) {
 	video.srcObject = stream;
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
 	});
-	// let container = document.createElement('div');
-	// let nametag = document.createElement('span');
-	// nametag.innerHTML = name;
-	// container.append(nametag);
-	// container.append(video);
-	videoGrid.append(video);
+
+	let container = document.createElement('div');
+	let nametag = document.createElement('span');
+	nametag.innerHTML = name;
+	container.append(nametag);
+	container.append(video);
+
+	videoGrid.append(container);
 }
 
 window.addEventListener('beforeunload', (e) => {
