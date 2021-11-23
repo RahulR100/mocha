@@ -30,8 +30,8 @@ io.on("connection", (socket) => {
 	socket.on("message", (roomId, message, userName) => {
 		io.to(roomId).emit("create-message", message, userName);
 	});
-	socket.on('connection-request', (userId) => {
-		socket.broadcast.emit('new-user-connected', userId)
+	socket.on('connection-request', (userId, userName) => {
+		socket.broadcast.emit('new-user-connected', userId, userName);
 	});
 });
 

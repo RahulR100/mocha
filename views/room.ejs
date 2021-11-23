@@ -15,44 +15,66 @@
 <body>
 	<div class="header">
 		<div class="logo">
-			<div class="header__back">
+			<div class="header_back">
 				<i class="fas fa-angle-left"></i>
 			</div>
-			<h3>Mocha</h3>
+			<img src="icon.png" alt="">
+			<h1>Mocha Video</h1>
 			</div>
 		</div>  
 		<div class="main">  
-			<div class="main__left">
-				<div class="videos__group">
+			<div class="main_left">
+				<div class="videos_group">
 					<div id="video-grid"></div>
 				</div>
 				<div class="options">
-					<div class="options__left">
-						<div id="stopVideo" class="options__button">
+					<div class="options_left">
+						<div id="stopVideo" class="options_button">
 							<i class="fa fa-video-camera"></i>
 						</div>
-						<div id="muteButton" class="options__button">
+						<div id="muteButton" class="options_button">
 							<i class="fa fa-microphone"></i>
 						</div>
-						<div id="showChat" class="options__button">
+						<div id="showChat" class="active options_button">
 							<i class="fa fa-comment"></i>
 						</div>
+						<div id="showAgenda" class="options_button">
+							<i class="fa fa-calendar-day"></i>
+						</div>
 					</div>
-					<div class="options__right">
-						<div id="inviteButton" class="options__button">
-							<i class="fas fa-link"></i>
+					<div class="options_right">
+						<div id="inviteButton" class="options_button">
+							<i class="fa fa-link"></i>
+						</div>
+						<div id="endCall" class="options_button">
+							<i class="fa fa-phone-slash"></i>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="main__right">
-				<div class="main__chat_window">
-					<div class="messages"></div>
+			<div class="main_right">
+				<div class="chat_container">
+					<h3>Chat</h3>
+					<div class="main_chat_window">
+						<div class="messages"></div>
+					</div>
+					<div class="main_message_container">
+						<input id="chat_message" type="text" autocomplete="off" placeholder="Type message here...">
+						<div id="send" class="options_button" style="margin-right: 0 !important;">
+							<i class="fa fa-paper-plane" aria-hidden="true"></i>
+						</div>
+					</div>
 				</div>
-				<div class="main__message_container">
-					<input id="chat_message" type="text" autocomplete="off" placeholder="Type message here...">
-					<div id="send" class="options__button">
-						<i class="fa fa-paper-plane" aria-hidden="true"></i>
+				<div class="hidden agenda_container">
+					<h3>Agenda</h3>
+					<div class="main_agenda_window">
+						<div class="messages"></div>
+					</div>
+					<div class="main_agenda_container">
+						<input id="agenda_message" type="text" autocomplete="off" placeholder="Add item to agenda...">
+						<div id="send" class="options_button" style="margin-right: 0 !important;">
+							<i class="fa fa-calendar-plus" aria-hidden="true"></i>
+						</div>
 					</div>
 				</div>
 			</div>
