@@ -88,10 +88,10 @@ function addVideoStream(video, stream) {
 	videoGrid.append(video);
 }
 
-window.addEventListener('beforeunload'), (e) => {
+window.addEventListener('beforeunload', (e) => {
 	e.preventDefault();
 	socket.emit('call-ended', ROOM_ID, myId);
-}
+});
 
 let text = document.querySelector("#chat_message");
 let send = document.getElementById("send");
