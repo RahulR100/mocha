@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
       	socket.broadcast.emit('user-disconnected', userId);
     });
 	socket.on("message", (roomId, message, userName) => {
-		socket.broadcast.emit("createMessage", message, userName);
+		socket.emit("createMessage", message, userName);
 	});
 	socket.on('connection-request', (roomId, userId) => {
 		socket.broadcast.emit('new-user-connected', userId)
