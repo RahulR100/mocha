@@ -36,7 +36,7 @@ myPeer.on("call", (call) => {
 	call.answer(myVideoStream);
 	const video = document.createElement("video");
 	
-	console.log(call.id);
+	console.log(call.peer);
 
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream, peers[call.id]);
