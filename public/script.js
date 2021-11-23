@@ -19,11 +19,11 @@ navigator.mediaDevices.getUserMedia({
 	video: true,
 }).then((stream) => {
 	myVideoStream = stream;
-	addVideoStream(myVideo, stream, user);
+	addVideoStream(myVideo, stream);
 
 	socket.on('new-user-connected', (userId, userName) => {
 		if (userId != myId) {
-			connectToNewUser(userId, userName, stream);
+			connectToNewUser(userId, stream);
 		}
 	});
 
@@ -35,13 +35,12 @@ myPeer.on("call", (call) => {
 	const video = document.createElement("video");
 	
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream, "");
+		addVideoStream(video, userVideoStream);
 	});
 });
 
 socket.on('user-disconnected', (userId) => {
 	document.getElementById(userId).outerHTML = "";
-	if (peers[userId]) peers[userId].close();
 });
 
 myPeer.on("open", (id) => {
@@ -49,29 +48,29 @@ myPeer.on("open", (id) => {
 	socket.emit("join-room", ROOM_ID);
 });
 
-function connectToNewUser(userId, userName, stream) {
+function connectToNewUser(userId, stream) {
 	const call = myPeer.call(userId, stream);
 	const video = document.createElement("video");
 	video.setAttribute('id', userId);
 
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream, userName);
+		addVideoStream(video, userVideoStream);
 	});
 
 	peers[userId] = call;
 }
 
-function addVideoStream(video, stream, name) {
+function addVideoStream(video, stream) {
 	video.srcObject = stream;
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
 	});
-	let container = document.createElement('div');
-	let nametag = document.createElement('span');
-	container.append(nametag);
-	nametag.innerHTML = name;
-	container.append(video);
-	videoGrid.append(container);
+	// let container = document.createElement('div');
+	// let nametag = document.createElement('span');
+	// nametag.innerHTML = name;
+	// container.append(nametag);
+	// container.append(video);
+	videoGrid.append(video);
 }
 
 window.addEventListener('beforeunload', (e) => {
