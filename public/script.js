@@ -73,9 +73,6 @@ function connectToNewUser(userId, stream) {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-	// call.on('close', () => {
-	//     document.getElementById(userId).outerHTML = "";
-	// });
 
 	peers[userId] = call;
 }
