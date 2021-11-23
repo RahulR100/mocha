@@ -56,7 +56,8 @@ myPeer.on("call", (call) => {
 });
 
 socket.on('user-disconnected', (userId) => {
-  if (peers[userId]) peers[userId].close();
+	document.getElementById(userId).outerHTML = "";
+	if (peers[userId]) peers[userId].close();
 });
 
 myPeer.on("open", (id) => {
@@ -72,9 +73,9 @@ function connectToNewUser(userId, stream) {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-	call.on('close', () => {
-	    document.getElementById(userId).outerHTML = "";
-	});
+	// call.on('close', () => {
+	//     document.getElementById(userId).outerHTML = "";
+	// });
 
 	peers[userId] = call;
 }
@@ -85,6 +86,11 @@ function addVideoStream(video, stream) {
 		video.play();
 	});
 	videoGrid.append(video);
+}
+
+window.addEventListener('beforeunload'), (e) => {
+	e.preventDefault();
+	socket.emit('call-ended', ROOM_ID, myId);
 }
 
 let text = document.querySelector("#chat_message");
