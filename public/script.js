@@ -69,9 +69,9 @@ function addVideoStream(video, stream, name) {
 	let container = document.createElement('div');
 	let nametag = document.createElement('span');
 	nametag.innerHTML = name;
+	videoGrid.append(container);
 	container.append(nametag);
 	container.append(video);
-	videoGrid.append(container);
 }
 
 window.addEventListener('beforeunload', (e) => {
