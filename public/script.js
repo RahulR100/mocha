@@ -5,7 +5,7 @@ myVideo.muted = true;
 
 var peers = {};
 
-const user = prompt("Enter your name");
+const myUsername = prompt("Enter your name");
 var myId;
 
 var myPeer = new Peer(undefined, {
@@ -22,12 +22,14 @@ navigator.mediaDevices.getUserMedia({
 	addVideoStream(myVideo, stream);
 
 	socket.on('new-user-connected', (userId, userName) => {
+		peers[userId] = userName;
+
 		if (userId != myId) {
 			connectToNewUser(userId, stream);
 		}
 	});
 
-	socket.emit('connection-request', myId, user);
+	socket.emit('connection-request', myId, myUsername);
 });
 
 myPeer.on("call", (call) => {
@@ -56,8 +58,6 @@ function connectToNewUser(userId, stream) {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream);
 	});
-
-	peers[userId] = call;
 }
 
 function addVideoStream(video, stream) {
@@ -108,14 +108,14 @@ let messages = document.querySelector(".messages");
 
 send.addEventListener("click", (e) => {
 	if (text.value.length !== 0) {
-		socket.emit("message", ROOM_ID, text.value, user);
+		socket.emit("message", ROOM_ID, text.value, myUsername);
 		text.value = "";
 	}
 });
 
 text.addEventListener("keydown", (e) => {
 	if (e.key === "Enter" && text.value.length !== 0) {
-		socket.emit("message", ROOM_ID, text.value, user);
+		socket.emit("message", ROOM_ID, text.value, myUsername);
 		text.value = "";
 	}
 });
@@ -156,14 +156,14 @@ inviteButton.addEventListener("click", (e) => {
 
 socket.on("create-message", (message, userName) => {
 	let appendClass;
-	if (userName === user) {
+	if (userName === myUsername) {
 		appendClass = "message_me";
 	}
 
 	messages.innerHTML +=
 	`<div class="message ${appendClass}">
 		<b><span> ${
-			userName === user ? "me" : userName
+			userName === myUsername ? "me" : userName
 		}</span></b>
 		<span>${message}</span>
 	</div>`;
