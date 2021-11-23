@@ -1,10 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
 :root {
-  --main-darklg: #1d2635;
-  --main-dark: #161d29;
-  --primary-color: #2f80ec;
-  --main-light: #eeeeee;
+  --main-darklg: #ab8f7e;
+  --main-dark: #dbcdc1;
+  --primary-color: #896446;
+  --secondary-color: #f6484a;
+  --side-panel-color: #f2f2f2;
+  --main-light: #f2f2f2;
   font-family: "Poppins", sans-serif;
 }
 
@@ -62,7 +64,7 @@ video {
 .options {
   padding: 1rem;
   display: flex;
-  background-color: var(--main-darklg);
+  background-color: var(--main-dark);
 }
 
 .options__left {
@@ -87,14 +89,14 @@ video {
 }
 
 .background__red {
-  background-color: #f6484a;
+  background-color: var(--secondary-color);
 }
 
 .main__right {
   display: flex;
   flex-direction: column;
   flex: 0.3;
-  background-color: #242f41;
+  background-color: var(--side-panel-color);
 }
 
 .main__chat_window {
@@ -109,17 +111,20 @@ video {
 .main__message_container {
   padding: 1rem;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .main__message_container > input {
-  height: 50px;
+  height: 35px;
   flex: 1;
   font-size: 1rem;
-  border-radius: 5px;
-  padding-left: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: var(--side-panel-color);
+  outline: none;
   border: none;
+  border-bottom: solid 2px var(--primary-color);
 }
 
 .messages {
@@ -130,24 +135,28 @@ video {
 
 .message {
   display: flex;
+  flex: 1;
   flex-direction: column;
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+.message_me {
+  align-self: flex-end !important;
+  align-items: flex-end !important;
 }
 
 .message > b {
-  color: #eeeeee;
+  color: var(--primary-color);
   display: flex;
   align-items: center;
   text-transform: capitalize;
 }
 
-.message > b > i {
-  margin-right: 0.7rem;
-  font-size: 1.5rem;
-}
-
 .message > span {
-  background-color: #eeeeee;
-  margin: 1rem 0;
+  background-color: var(--main-dark);
+  margin-top: 5px;
+  margin-bottom: 20px;
   padding: 1rem;
   border-radius: 5px;
 }
@@ -168,7 +177,7 @@ video {
   font-size: 1.3rem;
   top: 17px;
   left: 28px;
-  color: #fff;
+  color: var(--main-dark);
 }
 
 @media (max-width: 700px) {

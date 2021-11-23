@@ -150,11 +150,16 @@ inviteButton.addEventListener("click", (e) => {
 });
 
 socket.on("create-message", (message, userName) => {
+	let appendClass;
+	if (userName === user) {
+		appendClass = "message_me";
+	}
+
 	messages.innerHTML +=
-	`<div class="message">
-		<b><i class="far fa-user-circle"></i> <span> ${
+	`<div class="message ${appendClass}">
+		<b><span> ${
 			userName === user ? "me" : userName
-		}</span> </b>
+		}</span></b>
 		<span>${message}</span>
 	</div>`;
 });

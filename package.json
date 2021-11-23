@@ -1,6 +1,6 @@
 {
 	"name": "mocha",
-	"version": "0.6.1",
+	"version": "0.7.0",
 	"description": "A WebRTC meeting and planning app",
 	"main": "index.js",
 	"scripts": {
