@@ -33,6 +33,9 @@ io.on("connection", (socket) => {
 	socket.on('connection-request', (userId, userName) => {
 		socket.broadcast.emit('new-user-connected', userId, userName);
 	});
+	socket.on('updated-peer-list', (peerList) => {
+		socket.broadcast.emit('new-peer-list', peerList);
+	});
 });
 
 server.listen(3000);

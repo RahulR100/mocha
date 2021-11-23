@@ -23,6 +23,7 @@ navigator.mediaDevices.getUserMedia({
 
 	socket.on('new-user-connected', (userId, userName) => {
 		peers[userId] = userName;
+		socket.emit('updated-peer-list', peers);
 
 		if (userId != myId) {
 			connectToNewUser(userId, stream);
@@ -39,6 +40,10 @@ myPeer.on("call", (call) => {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream, peers[call.peer]);
 	});
+});
+
+socket.on('new-peer-list', (peerList) => {
+	peers = peerList;
 });
 
 socket.on('user-disconnected', (userId) => {
