@@ -23,7 +23,7 @@ navigator.mediaDevices.getUserMedia({
 
 	socket.on('new-user-connected', (userId, userName) => {
 		if (userId != myId) {
-			connectToNewUser(userId, stream, user);
+			connectToNewUser(userId, userName, stream);
 		}
 	});
 
@@ -71,7 +71,7 @@ function addVideoStream(video, stream, name) {
 	nametag.innerHTML = name;
 	container.append(nametag);
 	container.append(video);
-	videoGrid.append(video);
+	videoGrid.append(container);
 }
 
 window.addEventListener('beforeunload', (e) => {
