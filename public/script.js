@@ -67,16 +67,8 @@ function connectToNewUser(userId, stream) {
 	video.setAttribute('id', userId);
 
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream);
+		addVideoStream(video, userVideoStream, peers[userId]);
 	});
-}
-
-function addVideoStream(video, stream) {
-	video.srcObject = stream;
-	video.addEventListener("loadedmetadata", () => {
-		video.play();
-	});
-	videoGrid.append(video);
 }
 
 function addVideoStream(video, stream, name) {
@@ -92,6 +84,14 @@ function addVideoStream(video, stream, name) {
 	container.append(video);
 
 	videoGrid.append(container);
+
+	//clean up some randomly placed nodes
+	videoGrid.childNodes.forEach((currentValue) => {
+		if (currentValue.childNodes.length < 2) {
+			currentValue.childNodes.outerHTML = "";
+		}
+	});
+
 }
 
 window.addEventListener('beforeunload', (e) => {
