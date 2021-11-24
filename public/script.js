@@ -15,8 +15,8 @@ var myPeer = new Peer(undefined, {
 	secure: true
 });
 
-String.prototype.toHHMMSS = () => {
-    var sec_num = parseInt(this, 10); // don't forget the second param
+function toHHMMSS (time) {
+    var sec_num = parseInt(time, 10);
     var hours   = Math.floor(sec_num / 3600);
     var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
     var seconds = sec_num - (hours * 3600) - (minutes * 60);
@@ -61,15 +61,19 @@ socket.on('sync-data-req', (socketId) => {
 	socket.emit('sync-data-res', socketId, timer, agendaCache);
 });
 
-const timerItem = document.getElementById("timer");
+const timerItem = document.getElementById("timer_container");
 const agenda = document.querySelector(".aItems");
 
 socket.on('data-init', (timer, agendaCache) => {
 	timer = timer;
 	agendaCache = agendaCache;
-	timerItem.innerHTML = timer;
 	agenda.innerHTML = agendaCache;
 });
+
+function setTimer () {
+	timerItem.innerHTML = toHHMMSS(timer);
+	timer++;
+}
 
 socket.on('new-peer-list', (peerList) => {
 	peers = {...peers, ...peerList};
@@ -82,6 +86,7 @@ socket.on('user-disconnected', (userId) => {
 myPeer.on("open", (id) => {
 	myId = id;
 	socket.emit("join-room", ROOM_ID);
+	setInterval(setTimer, 1000);
 });
 
 function addPeerToList(userId, userName) {

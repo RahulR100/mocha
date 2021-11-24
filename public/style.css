@@ -114,12 +114,16 @@ video {
 	height: 50px;
 	border-radius: 5px;
 	font-size: 1.2rem;
-	width: 50px;
 	margin: 0 0.5rem;
+}
+
+.options_item {
+	width: 85px;
 }
 
 .options_button {
 	cursor: pointer;
+	width: 50px;
 	background-color: var(--primary-color);
 	color: var(--main-light);
 }
