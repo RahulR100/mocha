@@ -21,6 +21,9 @@ navigator.mediaDevices.getUserMedia({
 	myVideoStream = stream;
 	addVideoStream(myVideo, stream, myUsername);
 
+	peers[myId] = myUsername;
+	socket.emit('updated-peer-list', peers);
+
 	socket.on('new-user-connected', (userId, userName) => {
 		peers[userId] = userName;
 		socket.emit('updated-peer-list', peers);
