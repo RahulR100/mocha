@@ -102,7 +102,7 @@ window.addEventListener('beforeunload', (e) => {
 let endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
-	window.location.replace('mochavideo.xyz/call-ended');
+	window.location.replace('call-ended');
 })
 
 let showChat = document.querySelector("#showChat");
