@@ -7,12 +7,12 @@
 	--secondary-color: #4c2010;
 	--side-panel-color: #f2f2f2;
 	--main-light: #f2f2f2;
-	font-family: "Poppins", sans-serif;
 }
 
 * {
 	margin: 0;
 	padding: 0;
+	font-family: "Poppins", sans-serif;
 }
 
 body {
@@ -107,18 +107,21 @@ video {
 	margin-left: auto;
 }
 
-.options_button {
+.options_button, .options_item {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: var(--primary-color);
 	height: 50px;
 	border-radius: 5px;
-	color: var(--main-light);
 	font-size: 1.2rem;
 	width: 50px;
 	margin: 0 0.5rem;
+}
+
+.options_button {
 	cursor: pointer;
+	background-color: var(--primary-color);
+	color: var(--main-light);
 }
 
 .active {
@@ -161,7 +164,7 @@ video {
 	justify-content: center;
 }
 
-.main_message_container > input, .main_agenda_container > input {
+.main_message_container > input, .main_agenda_container > textarea {
 	height: 40px;
 	flex: 1;
 	font-size: 1rem;
@@ -173,7 +176,7 @@ video {
 	border-bottom: solid 2px var(--primary-color);
 }
 
-.messages {
+.messages, .aItems {
 	display: flex;
 	flex-direction: column;
 	margin: 1.5rem;
@@ -187,6 +190,10 @@ video {
 	align-items: flex-start;
 }
 
+.agenda {
+	width: 100%;
+}
+
 .message {
 	max-width: 90%;
 }
@@ -196,19 +203,28 @@ video {
 	align-items: flex-end !important;
 }
 
-.message > b {
+.message > b, .agenda > b {
 	color: var(--primary-color);
 	display: flex;
 	align-items: center;
 	text-transform: capitalize;
 }
 
-.message > span {
+
+.message > span, .agenda > span {
 	background-color: var(--main-dark);
 	margin-top: 5px;
 	margin-bottom: 20px;
 	padding: 1rem;
 	border-radius: 5px;
+}
+
+.agenda > span {
+	width: 90%;
+}
+
+.agenda > span > ul {
+	margin-left: 2rem;
 }
 
 #video-grid {

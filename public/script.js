@@ -4,6 +4,8 @@ const myVideo = document.createElement("video");
 myVideo.muted = true;
 
 var peers = {};
+var agendaCache = "";
+var timer = 0;
 
 const myUsername = prompt("Enter your name");
 var myId;
@@ -12,6 +14,18 @@ var myPeer = new Peer(undefined, {
 	host: 'mochapeer.herokuapp.com',
 	secure: true
 });
+
+String.prototype.toHHMMSS = () => {
+    var sec_num = parseInt(this, 10); // don't forget the second param
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    return hours+':'+minutes+':'+seconds;
+}
 
 var myVideoStream;
 navigator.mediaDevices.getUserMedia({
@@ -41,6 +55,20 @@ myPeer.on("call", (call) => {
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream, peers[call.peer]);
 	});
+});
+
+socket.on('sync-data-req', (socketId) => {
+	socket.emit('sync-data-res', socketId, timer, agendaCache);
+});
+
+const timerItem = document.getElementById("timer");
+const agenda = document.querySelector(".aItems");
+
+socket.on('data-init', (timer, agendaCache) => {
+	timer = timer;
+	agendaCache = agendaCache;
+	timerItem.innerHTML = timer;
+	agenda.innerHTML = agendaCache;
 });
 
 socket.on('new-peer-list', (peerList) => {
@@ -91,7 +119,6 @@ function addVideoStream(video, stream, name) {
 			currentValue.outerHTML = "";
 		}
 	});
-
 }
 
 window.addEventListener('beforeunload', (e) => {
@@ -109,7 +136,6 @@ const showChat = document.querySelector("#showChat");
 const chatContainer = document.querySelector(".chat_container");
 const showAgenda = document.querySelector("#showAgenda");
 const agendaContainer = document.querySelector(".agenda_container");
-
 
 showChat.addEventListener('click', (e) => {
 	if (!showChat.classList.contains('active')) {
@@ -136,17 +162,21 @@ const messageContainer = document.querySelector(".main_chat_window");
 
 send.addEventListener("click", (e) => {
 	if (text.value.length !== 0) {
-		socket.emit("message", ROOM_ID, text.value, myUsername);
-		text.value = "";
+		sendMessage();
 	}
 });
 
 text.addEventListener("keydown", (e) => {
 	if (e.key === "Enter" && text.value.length !== 0) {
-		socket.emit("message", ROOM_ID, text.value, myUsername);
-		text.value = "";
+		sendMessage();
 	}
 });
+
+function sendMessage() {
+	socket.emit("message", ROOM_ID, text.value, myUsername);
+	text.value = "";
+	messageContainer.scrollTop = messageContainer.scrollHeight;
+}
 
 const inviteButton = document.querySelector("#inviteButton");
 const muteButton = document.querySelector("#muteButton");
@@ -195,6 +225,38 @@ socket.on("create-message", (message, userName) => {
 		}</span></b>
 		<span>${message}</span>
 	</div>`;
-
-    messageContainer.scrollTop = messageContainer.scrollHeight;
 });
+
+const item = document.querySelector("#agenda_message");
+const add = document.getElementById("add");
+const aContainer = document.querySelector(".main_agenda_window");
+
+add.addEventListener("click", (e) => {
+	if (item.value.length !== 0) {
+		addAgendaItem();
+	}
+});
+
+// item.addEventListener("keydown", (e) => {
+// 	if (e.key === "Enter" && item.value.length !== 0) {
+// 		addAgendaItem();
+// 	}
+// });
+
+socket.on("add-agenda", (agendaItem, userName) => {
+	agenda.innerHTML +=
+	`<div class="agenda">
+		<b><span> ${
+			userName === myUsername ? "me" : userName
+		}</span></b>
+		<span>${agendaItem}</span>
+	</div>`;
+
+	agendaCache = agenda.innerHTML;
+});
+
+function addAgendaItem() {
+	socket.emit("new-agenda", ROOM_ID, item.value, myUsername);
+	item.value = "";
+	aContainer.scrollTop = aContainer.scrollHeight;
+}
