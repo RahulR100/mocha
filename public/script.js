@@ -78,7 +78,7 @@ function addVideoStream(video, stream, name) {
 	});
 
 	const container = document.createElement('div');
-	const nametag = document.createTextNode('span');
+	const nametag = document.createElement('span');
 	nametag.innerHTML = name;
 	container.append(nametag);
 	container.append(video);
