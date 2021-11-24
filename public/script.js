@@ -58,7 +58,7 @@ myPeer.on("open", (id) => {
 
 function addPeerToList(userId, userName) {
 	peers[userId] = userName;
-	socket.emit('updated-peer-list');
+	socket.emit('updated-peer-list', peers);
 }
 
 function connectToNewUser(userId, stream) {
@@ -77,9 +77,8 @@ function addVideoStream(video, stream, name) {
 		video.play();
 	});
 
-	let container = document.createElement('div');
-	let nametag = document.createElement('span');
-	nametag.innerHTML = name;
+	const container = document.createElement('div');
+	const nametag = document.createTextNode(name);
 	container.append(nametag);
 	container.append(video);
 

@@ -76,7 +76,7 @@ video {
 	position: relative;
 }
 
-#video-grid > div > span {
+#video-grid > div > p {
 	position: absolute;
 	bottom: 15px;
 	right: 8px;
