@@ -99,6 +99,12 @@ window.addEventListener('beforeunload', (e) => {
 	socket.emit('call-ended', myId);
 });
 
+let endCall = document.getElementById("endCall");
+
+endCall.addEventListener('click', (e) => {
+	window.close();
+})
+
 let showChat = document.querySelector("#showChat");
 let chatContainer = document.querySelector(".chat_container");
 let showAgenda = document.querySelector("#showAgenda");
