@@ -87,8 +87,8 @@ function addVideoStream(video, stream, name) {
 
 	//clean up some randomly placed nodes
 	videoGrid.childNodes.forEach((currentValue) => {
-		if (currentValue.childNodes.length < 2) {
-			currentValue.childNodes.outerHTML = "";
+		if (currentValue.childElementCount < 2) {
+			currentValue.outerHTML = "";
 		}
 	});
 
