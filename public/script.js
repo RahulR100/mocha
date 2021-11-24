@@ -6,6 +6,7 @@ myVideo.muted = true;
 var peers = {};
 var agendaCache = "";
 var timer = 0;
+var timerInterval;
 
 const myUsername = prompt("Enter your name");
 var myId;
@@ -65,9 +66,11 @@ const timerItem = document.getElementById("timer_container");
 const agenda = document.querySelector(".aItems");
 
 socket.on('data-init', (timer, agendaCache) => {
+	clearInterval(timerInterval);
 	timer = timer;
 	agendaCache = agendaCache;
 	agenda.innerHTML = agendaCache;
+	timerInterval = setInterval(setTimer, 1000);
 });
 
 function setTimer () {
@@ -86,7 +89,7 @@ socket.on('user-disconnected', (userId) => {
 myPeer.on("open", (id) => {
 	myId = id;
 	socket.emit("join-room", ROOM_ID);
-	setInterval(setTimer, 1000);
+	timerInterval = setInterval(setTimer, 1000);
 });
 
 function addPeerToList(userId, userName) {
