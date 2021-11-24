@@ -4,8 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Mocha Video</title>
+	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="homeStyle.css" />
+	<script src="https://kit.fontawesome.com/c939d0e917.js"></script>
 </head>
 <body>
-	You have left the call.
+	<div class="jumbotron">
+		<div style="margin-right: 25px;" class="heading">		
+			<img src="icon.png" alt="">
+			<h1>You left the call!</h1>
+		</div>
+		<button onclick="window.location.replace('/new-room');" class="btn" style="margin-left: 25px;"><i style="margin-right: 5px;" class="fas fa-phone"></i>Start another room</button>
+	</div>
 </body>
 </html>

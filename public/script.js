@@ -99,16 +99,16 @@ window.addEventListener('beforeunload', (e) => {
 	socket.emit('call-ended', myId);
 });
 
-let endCall = document.getElementById("endCall");
+const endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
 	window.location.replace('call-ended');
 })
 
-let showChat = document.querySelector("#showChat");
-let chatContainer = document.querySelector(".chat_container");
-let showAgenda = document.querySelector("#showAgenda");
-let agendaContainer = document.querySelector(".agenda_container");
+const showChat = document.querySelector("#showChat");
+const chatContainer = document.querySelector(".chat_container");
+const showAgenda = document.querySelector("#showAgenda");
+const agendaContainer = document.querySelector(".agenda_container");
 
 
 showChat.addEventListener('click', (e) => {
@@ -129,9 +129,10 @@ showAgenda.addEventListener('click', (e) => {
 	}
 })
 
-let text = document.querySelector("#chat_message");
-let send = document.getElementById("send");
-let messages = document.querySelector(".messages");
+const text = document.querySelector("#chat_message");
+const send = document.getElementById("send");
+const messages = document.querySelector(".messages");
+const messageContainer = document.querySelector(".main_chat_window");
 
 send.addEventListener("click", (e) => {
 	if (text.value.length !== 0) {
@@ -194,4 +195,6 @@ socket.on("create-message", (message, userName) => {
 		}</span></b>
 		<span>${message}</span>
 	</div>`;
+
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 });

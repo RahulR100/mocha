@@ -4,8 +4,19 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Mocha Video</title>
+	<link rel="stylesheet" href="style.css" />
+	<link rel="stylesheet" href="homeStyle.css" />
+	<script src="https://kit.fontawesome.com/c939d0e917.js"></script>
 </head>
 <body>
-	Welcome to mocha video!
+	<div class="jumbotron">
+		<div class="heading">		
+			<img src="icon.png" alt="">
+			<h1>Mocha video</h1>
+		</div>
+		<hr>
+		<p>A protoype WebRTC video calling and planning application built using Peerjs, socketIO, node and express.</p>
+		<button onclick="window.location.replace('/new-room');" class="btn"><i style="margin-right: 5px;" class="fas fa-phone"></i> Start a new room</button>
+	</div>
 </body>
 </html>
