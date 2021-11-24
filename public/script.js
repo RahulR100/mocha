@@ -48,7 +48,7 @@ socket.on('new-peer-list', (peerList) => {
 });
 
 socket.on('user-disconnected', (userId) => {
-	document.getElementById(userId).outerHTML = "";
+	document.getElementById(userId).parentElement.outerHTML = "";
 });
 
 myPeer.on("open", (id) => {
@@ -67,8 +67,16 @@ function connectToNewUser(userId, stream) {
 	video.setAttribute('id', userId);
 
 	call.on("stream", (userVideoStream) => {
-		addVideoStream(video, userVideoStream, peers[userId]);
+		addVideoStream(video, userVideoStream);
 	});
+}
+
+function addVideoStream(video, stream) {
+	video.srcObject = stream;
+	video.addEventListener("loadedmetadata", () => {
+		video.play();
+	});
+	videoGrid.append(video);
 }
 
 function addVideoStream(video, stream, name) {
