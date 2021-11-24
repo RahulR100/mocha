@@ -43,7 +43,7 @@ myPeer.on("call", (call) => {
 });
 
 socket.on('new-peer-list', (peerList) => {
-	peers = peerList;
+	peers.append(peerList);
 });
 
 socket.on('user-disconnected', (userId) => {
