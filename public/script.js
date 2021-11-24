@@ -102,7 +102,7 @@ window.addEventListener('beforeunload', (e) => {
 let endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
-	window.close();
+	window.location.href('/call-ended');
 })
 
 let showChat = document.querySelector("#showChat");
