@@ -65,10 +65,11 @@ socket.on('sync-data-req', (socketId) => {
 const timerItem = document.getElementById("timer_container");
 const agenda = document.querySelector(".aItems");
 
-socket.on('data-init', (timer, agendaCache) => {
+socket.on('data-init', (newTimer, newAgendaCache) => {
 	clearInterval(timerInterval);
-	timer = timer;
-	agendaCache = agendaCache;
+	timer = newTimer;
+	console.log(newTimer);
+	agendaCache = newAgendaCache;
 	agenda.innerHTML = agendaCache;
 	timerInterval = setInterval(setTimer, 1000);
 });
