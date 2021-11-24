@@ -12,9 +12,9 @@ app.use(cors({
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-app.get('/', (req, res) => ) {
+app.get('/', (req, res) => {
 	res.render('home');
-}
+});
 
 app.get('/call-ended', (req, res) => {
 	res.render("call-ended");
