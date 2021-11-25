@@ -3,14 +3,17 @@ const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 myVideo.muted = true;
 
+//initiate peers list, agenda list and meeting clock
 var peers = {};
 var agendaCache = "";
 var timer = 0;
 var timerInterval;
 
+//get username and id
 const myUsername = prompt("Enter your name");
 var myId;
 
+//define a new peer for p2p connections
 var myPeer = new Peer(undefined, {
 	host: 'mochapeer.herokuapp.com',
 	secure: true,
@@ -22,6 +25,8 @@ var myPeer = new Peer(undefined, {
 	}
 });
 
+//convert timer to hh:mm:ss format
+//int --> string (hh:mm:ss)
 function toHHMMSS (time) {
     var sec_num = parseInt(time, 10);
     var hours   = Math.floor(sec_num / 3600);
@@ -34,6 +39,7 @@ function toHHMMSS (time) {
     return hours+':'+minutes+':'+seconds;
 }
 
+//request to broadcast video to the room after camera is ready
 var myVideoStream;
 navigator.mediaDevices.getUserMedia({
 	audio: true,
@@ -55,6 +61,7 @@ navigator.mediaDevices.getUserMedia({
 	socket.emit('connection-request', myId, myUsername);
 });
 
+//when someone calls me, respond with my video stream
 myPeer.on("call", (call) => {
 	call.answer(myVideoStream);
 	const video = document.createElement("video");
@@ -64,6 +71,7 @@ myPeer.on("call", (call) => {
 	});
 });
 
+//reply with data when a sync request is received
 socket.on('sync-data-req', (socketId) => {
 	socket.emit('sync-data-res', socketId, timer, agendaCache);
 });
@@ -71,6 +79,7 @@ socket.on('sync-data-req', (socketId) => {
 const timerItem = document.getElementById("timer_container");
 const agenda = document.querySelector(".aItems");
 
+//when synced data is received
 socket.on('data-init', (newTimer, newAgendaCache) => {
 	clearInterval(timerInterval);
 	timer = newTimer;
@@ -79,46 +88,55 @@ socket.on('data-init', (newTimer, newAgendaCache) => {
 	timerInterval = setInterval(setTimer, 1000);
 });
 
+//start the clock
 function setTimer () {
 	timerItem.innerHTML = toHHMMSS(timer);
 	timer++;
 }
 
+//receive a new peers list when a new user has joined
 socket.on('new-peer-list', (peerList) => {
 	peers = {...peers, ...peerList};
 });
 
+//fixes a bug where a frozen image of the users video would still remain even after they had left
 socket.on('user-disconnected', (userId) => {
 	document.getElementById(userId).parentElement.outerHTML = "";
 });
 
+//as soon as my peer (not necessarily camera) is ready, request to join the room
 myPeer.on("open", (id) => {
 	myId = id;
 	socket.emit("join-room", ROOM_ID);
 	timerInterval = setInterval(setTimer, 1000);
 });
 
+//function to add someone to my peers list
 function addPeerToList(userId, userName) {
 	peers[userId] = userName;
 	socket.emit('updated-peer-list', peers);
 }
 
+//connect to a new user given their user id and video stream from the call
 function connectToNewUser(userId, stream) {
 	const call = myPeer.call(userId, stream);
 	const video = document.createElement("video");
 	video.setAttribute('id', userId);
 
+	//respond to their stream
 	call.on("stream", (userVideoStream) => {
 		addVideoStream(video, userVideoStream, peers[userId]);
 	});
 }
 
+//add the video stream to the DOM
 function addVideoStream(video, stream, name) {
 	video.srcObject = stream;
 	video.addEventListener("loadedmetadata", () => {
 		video.play();
 	});
 
+	//generate nametags
 	const container = document.createElement('div');
 	const nametag = document.createElement('span');
 	nametag.innerHTML = name;
@@ -135,12 +153,14 @@ function addVideoStream(video, stream, name) {
 	});
 }
 
+//inform the room of departure when tab is closed
 window.addEventListener('beforeunload', (e) => {
 	socket.emit('call-ended', myId);
 });
 
 const endCall = document.getElementById("endCall");
 
+//triggers a departure which will inform the room (as defined above)
 endCall.addEventListener('click', (e) => {
 	window.location.replace('call-ended');
 })
@@ -150,6 +170,7 @@ const chatContainer = document.querySelector(".chat_container");
 const showAgenda = document.querySelector("#showAgenda");
 const agendaContainer = document.querySelector(".agenda_container");
 
+//toggle between chat and agenda window
 showChat.addEventListener('click', (e) => {
 	if (!showChat.classList.contains('active')) {
 		showChat.classList.toggle('active');
@@ -173,6 +194,7 @@ const send = document.getElementById("send");
 const messages = document.querySelector(".messages");
 const messageContainer = document.querySelector(".main_chat_window");
 
+//event listeners for the message send box (click and enter)
 send.addEventListener("click", (e) => {
 	if (text.value.length !== 0) {
 		sendMessage();
@@ -185,6 +207,7 @@ text.addEventListener("keydown", (e) => {
 	}
 });
 
+//send a message to the room. clear the message box after sending
 function sendMessage() {
 	socket.emit("message", ROOM_ID, text.value, myUsername);
 	text.value = "";
@@ -195,6 +218,7 @@ const inviteButton = document.querySelector("#inviteButton");
 const muteButton = document.querySelector("#muteButton");
 const stopVideo = document.querySelector("#stopVideo");
 
+//mute mic and video
 muteButton.addEventListener("click", () => {
 	const enabled = myVideoStream.getAudioTracks()[0].enabled;
 	if (enabled) {
@@ -221,10 +245,12 @@ stopVideo.addEventListener("click", () => {
 	}
 });
 
+//show a prompt with a link for users to join the room
 inviteButton.addEventListener("click", (e) => {
 	prompt("Use this link to join the room", window.location.href);
 });
 
+//when the server informs us of a new message, add it to the chat window
 socket.on("create-message", (message, userName) => {
 	let appendClass;
 	if (userName === myUsername) {
@@ -244,6 +270,7 @@ const item = document.querySelector("#agenda_message");
 const add = document.getElementById("add");
 const aContainer = document.querySelector(".main_agenda_window");
 
+//event listener for adding a new agenda item (enter is not added as it causes problems)
 add.addEventListener("click", (e) => {
 	if (item.value.length !== 0) {
 		addAgendaItem();
@@ -257,6 +284,7 @@ const cancelEdits = document.getElementById("cancelEditsButton");
 const saveEdits = document.getElementById("saveEditsButton");
 var currentAgendaId;
 
+//event handlers for the different functions in the edit agenda modal.
 saveEdits.onclick = () => {
 	socket.emit('modify-agenda', ROOM_ID, currentAgendaId, content.value);
 	modal.style.display = "none";
@@ -276,6 +304,7 @@ window.onclick = function(event) {
 	}
 }
 
+//edits an agenda with a given uuid and updates its raw and formated contents
 function agendaEdit(agendaItem, agendaRaw, uuid) {
 	const agendaIQ = document.getElementById(uuid);
 	if (agendaIQ != null) {
@@ -284,6 +313,7 @@ function agendaEdit(agendaItem, agendaRaw, uuid) {
 	}
 }
 
+//brings up the editing modal
 function agendaEditModal(uuid) {
 	const agendaIQ = document.getElementById(uuid);
 	currentAgendaId = uuid;
@@ -291,6 +321,7 @@ function agendaEditModal(uuid) {
 	modal.style.display = "block";
 }
 
+//delete an agenda element with the given uuid
 function agendaDelete(uuid, needConfirm) {
 	const agendaIQ = document.getElementById(uuid);
 	if (needConfirm) {
@@ -302,6 +333,7 @@ function agendaDelete(uuid, needConfirm) {
 	}
 }
 
+//mark an agenda with the given uuid as complete and move it to the bottom of the list
 function agendaComplete(uuid) {
 	const agendaIQ = document.getElementById(uuid);
 	agendaIQ.children[1].children[1].children[2].outerHTML = "";
@@ -311,6 +343,7 @@ function agendaComplete(uuid) {
 	socket.emit('complete-agenda', uuid);
 }
 
+//informing the rest of the room when I take action for an agenda item
 socket.on("finish-agenda", (agendaId) => {
 	agendaComplete(agendaId);
 });
@@ -347,6 +380,7 @@ socket.on("add-agenda", (agendaItem, agendaRaw, userName, uuid) => {
 	agendaCache = agenda.innerHTML;
 });
 
+//add an item to the agenda and tell the rest of the room too :)
 function addAgendaItem() {
 	socket.emit("new-agenda", ROOM_ID, item.value, myUsername);
 	item.value = "";

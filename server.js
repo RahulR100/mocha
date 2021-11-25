@@ -15,6 +15,7 @@ app.use(cors({
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
+//url routes
 app.get('/', (req, res) => {
 	res.render('home');
 });
@@ -31,6 +32,7 @@ app.get("/:room", (req, res) => {
 	res.render("room", { roomId: req.params.room });
 });
 
+//socket functions for talking to rooms
 io.on("connection", (socket) => {
 	socket.on("join-room", (roomId) => {
 		socket.join(roomId);
@@ -65,4 +67,5 @@ io.on("connection", (socket) => {
 	});
 });
 
+//bind to port 3000
 server.listen(3000);
