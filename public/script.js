@@ -307,6 +307,7 @@ function agendaComplete(uuid) {
 	agendaIQ.children[1].children[1].children[2].outerHTML = "";
 	agendaIQ.children[1].setAttribute("style", "background-color: #60C260;");
 	agendaIQ.setAttribute("style", "order: " + timer + ";");
+	agendaCache = agenda.innerHTML;
 	socket.emit('complete-agenda', uuid);
 }
 
