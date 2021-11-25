@@ -131,7 +131,9 @@ function addVideoStream(video, stream, name) {
 
 window.addEventListener('beforeunload', (e) => {
 	e.preventDefault();
-	socket.emit('call-ended', myId);
+	if (confirm("Are you sure you want to leave the call?")) {
+		socket.emit('call-ended', myId);
+	}
 });
 
 const endCall = document.getElementById("endCall");
@@ -248,16 +250,19 @@ add.addEventListener("click", (e) => {
 	}
 });
 
-function agendaDelete(uuid) {
+function agendaDelete(uuid, needConfirm) {
 	const agendaIQ = document.getElementById(uuid);
-	if (agendaIQ != null && confirm("Are you sure you want to delete this item?")) {
+	if (needConfirm) {
+		if (!confirm("Are you sure you want to delete this item?")) return;
+	}
+	if (agendaIQ != null) {
 		agendaIQ.outerHTML = "";
 		socket.emit('delete-agenda', uuid);
 	}
 }
 
 socket.on('remove-agenda', (agendaId) => {
-	agendaDelete(agendaId);
+	agendaDeleteNoConfirm(agendaId, false);
 });
 
 socket.on("add-agenda", (agendaItem, userName, uuid) => {
@@ -271,7 +276,7 @@ socket.on("add-agenda", (agendaItem, userName, uuid) => {
 				<div id="agendaEditButton" onclick="agendaEdit('${uuid}');" class="agenda_button">
 					<i class="fa fa-pencil-alt"></i>
 				</div>
-				<div id="agendaDeleteButton" onclick="agendaDelete('${uuid}');" class="agenda_button">
+				<div id="agendaDeleteButton" onclick="agendaDelete('${uuid}', true);" class="agenda_button">
 					<i class="fa fa-trash-alt"></i>
 				</div>
 			</div>
