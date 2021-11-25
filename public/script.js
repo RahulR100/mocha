@@ -16,7 +16,7 @@ var myPeer = new Peer(undefined, {
 	secure: true,
 	config: {
 		'iceServers': [
-			{url: 'stun.mochaturn.xyz'},
+			{url: 'stun:mochaturn.xyz'},
 			{url: 'turn:mocha@mochaturn.xyz', credential: 'mochavideo'}
 		]
 	}
