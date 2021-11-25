@@ -130,7 +130,6 @@ function addVideoStream(video, stream, name) {
 }
 
 window.addEventListener('beforeunload', (e) => {
-	e.preventDefault();
 	if (confirm("Are you sure you want to leave the call?")) {
 		socket.emit('call-ended', myId);
 	}
@@ -139,7 +138,6 @@ window.addEventListener('beforeunload', (e) => {
 const endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
-	e.preventDefault();
 	if (confirm("Are you sure you want to leave the call?")) {
 		window.location.replace('call-ended');
 	}
