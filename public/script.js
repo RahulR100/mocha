@@ -130,17 +130,13 @@ function addVideoStream(video, stream, name) {
 }
 
 window.addEventListener('beforeunload', (e) => {
-	if (confirm("Are you sure you want to leave the call?")) {
-		socket.emit('call-ended', myId);
-	}
+	socket.emit('call-ended', myId);
 });
 
 const endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
-	if (confirm("Are you sure you want to leave the call?")) {
-		window.location.replace('call-ended');
-	}
+	window.location.replace('call-ended');
 })
 
 const showChat = document.querySelector("#showChat");
