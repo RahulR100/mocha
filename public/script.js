@@ -262,7 +262,7 @@ function agendaDelete(uuid, needConfirm) {
 }
 
 socket.on('remove-agenda', (agendaId) => {
-	agendaDeleteNoConfirm(agendaId, false);
+	agendaDelete(agendaId, false);
 });
 
 socket.on("add-agenda", (agendaItem, userName, uuid) => {
