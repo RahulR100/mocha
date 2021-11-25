@@ -46,7 +46,10 @@ io.on("connection", (socket) => {
 		io.to(roomId).emit("create-message", message, userName);
 	});
 	socket.on("new-agenda", (roomId, agendaItem, userName) => {
-		io.to(roomId).emit("add-agenda", xss(marked.parse(agendaItem)), userName);
+		io.to(roomId).emit("add-agenda", xss(marked.parse(agendaItem)), userName, uuidv4());
+	});
+	socket.on("delete-agenda", (agendaId) => {
+		socket.broadcast.emit('remove-agenda', agendaId);
 	});
 	socket.on('connection-request', (userId, userName) => {
 		socket.broadcast.emit('new-user-connected', userId, userName);

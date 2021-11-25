@@ -98,6 +98,10 @@ video {
 	background-color: var(--main-dark);
 }
 
+.agenda_options {
+	display: flex;
+}
+
 .options_left {
 	display: flex;
 }
@@ -105,6 +109,21 @@ video {
 .options_right {
 	display: flex;
 	margin-left: auto;
+}
+
+.agenda_button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 30px;
+	width: 30px;
+	border-radius: 5px;
+	font-size: 0.8rem;
+	margin-top: 10px;
+	margin-right: 10px;
+	cursor: pointer;
+	background-color: var(--primary-color);
+	color: var(--main-light);
 }
 
 .options_button, .options_item {

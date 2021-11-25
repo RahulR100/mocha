@@ -68,7 +68,6 @@ const agenda = document.querySelector(".aItems");
 socket.on('data-init', (newTimer, newAgendaCache) => {
 	clearInterval(timerInterval);
 	timer = newTimer;
-	console.log(newTimer);
 	agendaCache = newAgendaCache;
 	agenda.innerHTML = agendaCache;
 	timerInterval = setInterval(setTimer, 1000);
@@ -138,7 +137,10 @@ window.addEventListener('beforeunload', (e) => {
 const endCall = document.getElementById("endCall");
 
 endCall.addEventListener('click', (e) => {
-	window.location.replace('call-ended');
+	e.preventDefault();
+	if (confirm("Are you sure you want to leave the call?")) {
+		window.location.replace('call-ended');
+	}
 })
 
 const showChat = document.querySelector("#showChat");
@@ -246,19 +248,34 @@ add.addEventListener("click", (e) => {
 	}
 });
 
-// item.addEventListener("keydown", (e) => {
-// 	if (e.key === "Enter" && item.value.length !== 0) {
-// 		addAgendaItem();
-// 	}
-// });
+function agendaDelete(uuid) {
+	const agendaIQ = document.getElementById(uuid);
+	if (agendaIQ != null && confirm("Are you sure you want to delete this item?")) {
+		agendaIQ.outerHTML = "";
+		socket.emit('delete-agenda', uuid);
+	}
+}
 
-socket.on("add-agenda", (agendaItem, userName) => {
+socket.on('remove-agenda', (agendaId) => {
+	agendaDelete(agendaId);
+});
+
+socket.on("add-agenda", (agendaItem, userName, uuid) => {
 	agenda.innerHTML +=
-	`<div class="agenda">
+	`<div class="agenda" id="${uuid}">
 		<b><span> ${
 			userName === myUsername ? "me" : userName
 		}</span></b>
-		<span>${agendaItem}</span>
+		<span>${agendaItem}
+			<div class="agenda_options">
+				<div id="agendaEditButton" onclick="agendaEdit('${uuid}');" class="agenda_button">
+					<i class="fa fa-pencil-alt"></i>
+				</div>
+				<div id="agendaDeleteButton" onclick="agendaDelete('${uuid}');" class="agenda_button">
+					<i class="fa fa-trash-alt"></i>
+				</div>
+			</div>
+		</span>
 	</div>`;
 
 	agendaCache = agenda.innerHTML;
@@ -269,3 +286,5 @@ function addAgendaItem() {
 	item.value = "";
 	aContainer.scrollTop = aContainer.scrollHeight;
 }
+
+const deleteAgenda = document.getElementById("deleteAgenda");
