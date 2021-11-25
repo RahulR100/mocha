@@ -13,7 +13,13 @@ var myId;
 
 var myPeer = new Peer(undefined, {
 	host: 'mochapeer.herokuapp.com',
-	secure: true
+	secure: true,
+	config: {
+		'iceServers': [
+			{url: 'stun.mochaturn.xyz'},
+			{url: 'turn:mocha@mochaturn.xyz', credential: 'mochavideo'}
+		]
+	}
 });
 
 function toHHMMSS (time) {
