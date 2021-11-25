@@ -352,5 +352,3 @@ function addAgendaItem() {
 	item.value = "";
 	aContainer.scrollTop = aContainer.scrollHeight;
 }
-
-// const deleteAgenda = document.getElementById("deleteAgenda");

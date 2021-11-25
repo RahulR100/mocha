@@ -246,7 +246,7 @@ video {
 	width: 90%;
 }
 
-.agenda > span > ul {
+.agenda > span > span > ul {
 	margin-left: 2rem;
 }
 
