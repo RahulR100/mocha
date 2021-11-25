@@ -13,6 +13,22 @@
 	</script>
 </head>
 <body>
+	<div id="editModal" class="modal">
+		<div class="modal-content">
+			<span id="closeEditModal" class="close">&times;</span>
+			<h3>Edit agenda item</h3>
+			<textarea id="editModalContent"></textarea>
+			<hr>
+			<div style="display: flex;">
+				<div style="margin-left: 0; margin-right: 10px; margin-top: 10px;" id="saveEditsButton" class="options_button">
+					<i class="fa fa-check"></i>
+				</div>
+				<div style="margin-left: 0; margin-right: 10px; margin-top: 10px;" id="cancelEditsButton" class="options_button">
+					<i class="fa fa-trash-alt"></i>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="header">
 		<div class="logo">
 			<div class="header_back">

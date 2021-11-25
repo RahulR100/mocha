@@ -250,6 +250,47 @@ add.addEventListener("click", (e) => {
 	}
 });
 
+const modal = document.getElementById("editModal");
+const content = document.getElementById("editModalContent");
+const closeModal = document.getElementById("closeEditModal");
+const cancelEdits = document.getElementById("cancelEditsButton");
+const saveEdits = document.getElementById("saveEditsButton");
+var currentAgendaId;
+
+saveEdits.onclick = () => {
+	socket.emit('modify-agenda', ROOM_ID, currentAgendaId, content.value);
+	modal.style.display = "none";
+}
+
+cancelEdits.onclick = () => {
+	modal.style.display = "none";
+}
+
+closeModal.onclick = () => {
+	modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+	if (event.target == modal) {
+		modal.style.display = "none";
+	}
+}
+
+function agendaEdit(agendaItem, agendaRaw, uuid) {
+	const agendaIQ = document.getElementById(uuid);
+	if (agendaIQ != null) {
+		agendaIQ.children[1].firstChild.innerHTML = agendaItem;
+		agendaIQ.setAttribute("raw", agendaRaw);
+	}
+}
+
+function agendaEditModal(uuid) {
+	const agendaIQ = document.getElementById(uuid);
+	currentAgendaId = uuid;
+	content.value = JSON.parse(agendaIQ.getAttribute("raw"));
+	modal.style.display = "block";
+}
+
 function agendaDelete(uuid, needConfirm) {
 	const agendaIQ = document.getElementById(uuid);
 	if (needConfirm) {
@@ -261,23 +302,42 @@ function agendaDelete(uuid, needConfirm) {
 	}
 }
 
+function agendaComplete(uuid) {
+	const agendaIQ = document.getElementById(uuid);
+	agendaIQ.children[1].children[1].children[2].outerHTML = "";
+	agendaIQ.children[1].setAttribute("style", "background-color: #60C260;");
+	agendaIQ.setAttribute("style", "order: " + timer + ";");
+	socket.emit('complete-agenda', uuid);
+}
+
+socket.on("finish-agenda", (agendaId) => {
+	agendaComplete(agendaId);
+});
+
 socket.on('remove-agenda', (agendaId) => {
 	agendaDelete(agendaId, false);
 });
 
-socket.on("add-agenda", (agendaItem, userName, uuid) => {
+socket.on("edit-agenda", (agendaItem, agendaRaw, uuid) => {
+	agendaEdit(agendaItem, agendaRaw, uuid);
+});
+
+socket.on("add-agenda", (agendaItem, agendaRaw, userName, uuid) => {
 	agenda.innerHTML +=
-	`<div class="agenda" id="${uuid}">
+	`<div class="agenda" id="${uuid}" raw='${agendaRaw}'>
 		<b><span> ${
 			userName === myUsername ? "me" : userName
 		}</span></b>
-		<span>${agendaItem}
+		<span><span>${agendaItem}</span>
 			<div class="agenda_options">
-				<div id="agendaEditButton" onclick="agendaEdit('${uuid}');" class="agenda_button">
+				<div id="agendaEditButton" onclick="agendaEditModal('${uuid}');" class="agenda_button">
 					<i class="fa fa-pencil-alt"></i>
 				</div>
 				<div id="agendaDeleteButton" onclick="agendaDelete('${uuid}', true);" class="agenda_button">
 					<i class="fa fa-trash-alt"></i>
+				</div>
+				<div id="agendaCompleteButton" onclick="agendaComplete('${uuid}');" class="agenda_button">
+					<i class="fa fa-check"></i>
 				</div>
 			</div>
 		</span>
@@ -292,4 +352,4 @@ function addAgendaItem() {
 	aContainer.scrollTop = aContainer.scrollHeight;
 }
 
-const deleteAgenda = document.getElementById("deleteAgenda");
+// const deleteAgenda = document.getElementById("deleteAgenda");
