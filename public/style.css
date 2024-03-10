@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
 :root {
 	--main-darklg: #ab8f7e;
@@ -12,7 +12,7 @@
 * {
 	margin: 0;
 	padding: 0;
-	font-family: "Poppins", sans-serif;
+	font-family: 'Poppins', sans-serif;
 }
 
 body {
@@ -126,7 +126,8 @@ video {
 	color: var(--main-light);
 }
 
-.options_button, .options_item {
+.options_button,
+.options_item {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -159,35 +160,41 @@ video {
 	background-color: var(--side-panel-color);
 }
 
-.chat_container, .agenda_container {
+.chat_container,
+.agenda_container {
 	display: flex;
 	flex-direction: column;
 	flex: 1;
 	height: 100%;
 }
 
-.chat_container > h3, .agenda_container > h3 {
+.chat_container > h3,
+.agenda_container > h3 {
 	margin: 10px;
 	align-self: center;
 }
 
-.main_chat_window, .main_agenda_window {
+.main_chat_window,
+.main_agenda_window {
 	flex-grow: 1;
 	overflow-y: scroll;
 }
 
-.main_chat_window::-webkit-scrollbar, .main_agenda_window::-webkit-scrollbar {
+.main_chat_window::-webkit-scrollbar,
+.main_agenda_window::-webkit-scrollbar {
 	display: none;
 }
 
-.main_message_container, .main_agenda_container {
+.main_message_container,
+.main_agenda_container {
 	padding: 1rem;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
 }
 
-.main_message_container > input, .main_agenda_container > textarea {
+.main_message_container > input,
+.main_agenda_container > textarea {
 	height: 40px;
 	flex: 1;
 	font-size: 1rem;
@@ -199,13 +206,15 @@ video {
 	border-bottom: solid 2px var(--primary-color);
 }
 
-.messages, .aItems {
+.messages,
+.aItems {
 	display: flex;
 	flex-direction: column;
 	margin: 1.5rem;
 }
 
-.message, .agenda {
+.message,
+.agenda {
 	display: flex;
 	flex: 1;
 	flex-direction: column;
@@ -226,15 +235,16 @@ video {
 	align-items: flex-end !important;
 }
 
-.message > b, .agenda > b {
+.message > b,
+.agenda > b {
 	color: var(--primary-color);
 	display: flex;
 	align-items: center;
 	text-transform: capitalize;
 }
 
-
-.message > span, .agenda > span {
+.message > span,
+.agenda > span {
 	background-color: var(--main-dark);
 	margin-top: 5px;
 	margin-bottom: 20px;
@@ -294,7 +304,7 @@ video {
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
-	background-color: rgba(0,0,0,0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 	z-index: 20;
 }
 
